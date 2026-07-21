@@ -70,7 +70,7 @@ start-ios: check-ios-target
 	LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 $(FLUTTER) run -d "$$ios_id"
 
 start-ios-sim:
-	open -a Simulator
+	open -a Simulator && sleep 3
 	$(MAKE) start-ios
 
 start-aos:
