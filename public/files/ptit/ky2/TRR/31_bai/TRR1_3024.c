@@ -1,24 +1,21 @@
 #include <stdio.h>
 
-int n, k, found;
-int fixed_val[30], rev_val[30], ans[30], used[30];
+int n, k, found, f[30], r[30], ans[30], used[30];
 
 void backtrack(int pos) {
     if (pos > n) {
         found = 1;
         for (int i = 1; i <= n; i++)
-            printf("%d%c", ans[i], i == n ? '\n' : ' ');
+            printf("%d%c", ans[i], " \n"[i == n]);
         return;
     }
 
-    // N?u có giá tr? c? ??nh thì ch? gán 1 l?n, ng??c l?i th? t? 1 ??n n
-    int start = fixed_val[pos] ? fixed_val[pos] : 1;
-    int end   = fixed_val[pos] ? fixed_val[pos] : n;
+    int s = f[pos] ? f[pos] : 1;
+    int e = f[pos] ? f[pos] : n;
 
-    for (int v = start; v <= end; v++) {
+    for (int v = s; v <= e; v++) {
         if (!used[v]) {
-            used[v] = 1;
-            ans[pos] = v;
+            used[v] = 1; ans[pos] = v;
             backtrack(pos + 1);
             used[v] = 0;
         }
@@ -28,28 +25,17 @@ void backtrack(int pos) {
 int main() {
     if (scanf("%d%d", &n, &k) != 2) return 0;
 
-    int is_valid = 1;
-    for (int i = 0; i < k; i++) {
-        int u, v;
+    int valid = 1;
+    for (int i = 0, u, v; i < k; i++) {
         scanf("%d%d", &u, &v);
-
-        // Ki?m tra ph?m vi + Mâu thu?n gán giá tr? (u trùng v khác, ho?c v trùng u khác)
-        if (u < 1 || u > n || v < 1 || v > n ||
-           (fixed_val[u] && fixed_val[u] != v) ||
-           (rev_val[v] && rev_val[v] != u)) {
-            is_valid = 0;
-        }
-        fixed_val[u] = v;
-        rev_val[v] = u;
+        if (u < 1 || u > n || v < 1 || v > n || (f[u] && f[u] != v) || (r[v] && r[v] != u))
+            valid = 0;
+        else
+            f[u] = v, r[v] = u;
     }
 
-    if (!is_valid) {
-        puts("0");
-        return 0;
-    }
-
-    backtrack(1);
-
+    if (valid) backtrack(1);
     if (!found) puts("0");
+
     return 0;
 }
