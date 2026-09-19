@@ -117,6 +117,7 @@ start-ios: check-ios-target
 
 start-ios-sim:
 	open -a Simulator
+	sleep 10
 	$(MAKE) start-ios
 
 start-aos:
